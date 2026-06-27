@@ -1,0 +1,658 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Khóa Luận Tốt Nghiệp - Phan Duy Hoàng</title>
+    
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700;900&family=Space+Grotesk:wght@400;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
+
+    <style>
+        /* ================= BẢNG MÀU VÀ GIAO DIỆN CHUNG ================= */
+        :root {
+            --bg-deep: #0a0802;
+            --gold-primary: #FFD700;
+            --gold-secondary: #FFB300;
+            --gold-dark: #FF8F00;
+            --gold-light: #FFF8E1;
+            --glass-bg: rgba(255, 215, 0, 0.12);
+            --glass-border: rgba(255, 215, 0, 0.35);
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            font-family: 'Space Grotesk', sans-serif;
+            background-color: var(--bg-deep);
+            color: #e2e8f0;
+            overflow: hidden;
+            perspective: 1200px;
+        }
+
+        /* Background Động */
+        .bg-system { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; z-index: -2; background: radial-gradient(circle at 50% 50%, #1a1400 0%, #0a0802 100%); }
+        .cyber-grid { position: absolute; width: 200vw; height: 200vh; top: -50%; left: -50%; background-image: linear-gradient(rgba(255, 215, 0, 0.1) 1px, transparent 1px), linear-gradient(90deg, rgba(255, 215, 0, 0.1) 1px, transparent 1px); background-size: 60px 60px; transform: rotateX(60deg) translateY(0); animation: gridMove 20s linear infinite; }
+        @keyframes gridMove { 0% { transform: rotateX(60deg) translateY(0); } 100% { transform: rotateX(60deg) translateY(60px); } }
+        .orb { position: absolute; border-radius: 50%; filter: blur(80px); animation: float 12s infinite alternate ease-in-out; opacity: 0.6; }
+        .orb-1 { width: 500px; height: 500px; background: var(--gold-dark); top: -10%; left: -10%; }
+        .orb-2 { width: 600px; height: 600px; background: var(--gold-secondary); bottom: -20%; right: -10%; animation-delay: -4s; }
+        @keyframes float { 0% { transform: translate(0, 0) scale(1); } 100% { transform: translate(50px, 50px) scale(1.1); } }
+
+        /* Hệ thống Slide */
+        .slides-wrapper { width: 100vw; height: 100vh; position: relative; }
+        .slide { position: absolute; top: 0; left: 0; width: 100%; height: 100%; padding: 50px 80px; display: flex; flex-direction: column; justify-content: flex-start; opacity: 0; visibility: hidden; transform: scale(0.95) translateY(40px); transition: all 1s cubic-bezier(0.25, 1, 0.5, 1); }
+        .slide.active { opacity: 1; visibility: visible; z-index: 10; transform: scale(1) translateY(0); }
+
+        /* Typography */
+        .gradient-text { background: linear-gradient(135deg, var(--gold-light), var(--gold-primary), var(--gold-dark)); -webkit-background-clip: text; color: transparent; text-shadow: 0 0 40px rgba(255, 215, 0, 0.5); }
+        h1 { font-family: 'Montserrat', sans-serif; font-weight: 900; font-size: 4.2rem; line-height: 1.3; }
+        h2.slide-header { font-family: 'Montserrat', sans-serif; font-size: 2.8rem; margin-bottom: 30px; border-left: 8px solid var(--gold-primary); padding-left: 25px; text-transform: uppercase; letter-spacing: 2px; color: var(--gold-light); background: linear-gradient(90deg, rgba(255,215,0,0.15) 0%, transparent 100%); padding-top: 10px; padding-bottom: 10px; }
+        h3 { color: var(--gold-primary); font-family: 'Montserrat', sans-serif; margin-bottom: 15px; font-size: 1.8rem; line-height: 1.4; }
+        p { font-size: 1.3rem; line-height: 1.7; margin-bottom: 10px; }
+
+        /* Các khối Card Glassmorphism */
+        .glass-card { background: linear-gradient(145deg, rgba(255, 215, 0, 0.15), rgba(0, 0, 0, 0.6)); backdrop-filter: blur(25px); border: 2px solid var(--glass-border); border-radius: 20px; padding: 35px; position: relative; overflow: hidden; box-shadow: 0 15px 35px rgba(0,0,0,0.5), inset 0 0 20px rgba(255,215,0,0.08); transition: all 0.4s ease; }
+        .glass-card:not(.interactive-card):hover { transform: translateY(-8px); border-color: var(--gold-primary); box-shadow: 0 20px 45px rgba(255, 215, 0, 0.25), inset 0 0 25px rgba(255,215,0,0.15); }
+
+        /* Layouts */
+        .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 40px; align-items: stretch; height: 75%; }
+        .grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 30px; height: 75%; }
+        .grid-2-img { display: grid; grid-template-columns: 1.2fr 0.8fr; gap: 40px; align-items: stretch; height: 75%; }
+
+        /* Danh sách (Lists) */
+        ul.tech-list { list-style: none; }
+        ul.tech-list li { font-size: 1.3rem; line-height: 1.6; margin-bottom: 15px; display: flex; align-items: flex-start; gap: 15px; padding: 15px 20px; background: rgba(0,0,0,0.4); border-radius: 10px; border-left: 4px solid transparent; transition: 0.3s; }
+        ul.tech-list li:hover { border-left-color: var(--gold-primary); background: rgba(255,215,0,0.15); transform: translateX(10px); }
+        ul.tech-list li i { color: var(--gold-secondary); font-size: 1.5rem; margin-top: 3px; }
+
+        /* Khung Hình ảnh */
+        .img-wrapper { position: relative; border-radius: 20px; padding: 8px; background: var(--glass-bg); border: 2px solid var(--gold-primary); box-shadow: 0 15px 35px rgba(0,0,0,0.7); height: 100%; width: 100%; overflow: hidden; display: flex; justify-content: center; align-items: center; transition: all 0.5s ease; }
+        .img-wrapper:hover { transform: scale(1.03); box-shadow: 0 25px 50px rgba(255, 215, 0, 0.35); }
+        .glass-img { width: 100%; height: 100%; object-fit: cover; border-radius: 12px; filter: brightness(0.95) contrast(1.1); transition: 0.5s; }
+
+        /* Nút Bấm Tương Tác */
+        .process-btn { background: rgba(0,0,0,0.5); border: 2px solid rgba(255,255,255,0.1); padding: 15px; border-radius: 10px; text-align: center; cursor: pointer; transition: all 0.4s ease; position: relative; overflow: hidden; font-size: 1.4rem; font-weight: bold;}
+        .process-btn:hover { background: rgba(255,215,0,0.1); border-color: rgba(255,215,0,0.5); transform: translateY(-3px); }
+        .process-btn.active-glow { background: rgba(255,215,0,0.25); border-color: var(--gold-primary); color: var(--gold-primary); box-shadow: 0 0 20px rgba(255,215,0,0.4); transform: scale(1.05); z-index: 2; }
+
+        /* Hộp thoại Popup (Modal) */
+        .modal-overlay { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(0, 0, 0, 0.85); z-index: 1000; display: flex; justify-content: center; align-items: center; opacity: 0; visibility: hidden; transition: all 0.4s ease; backdrop-filter: blur(10px); }
+        .modal-overlay.show { opacity: 1; visibility: visible; }
+        .modal-content { background: linear-gradient(145deg, rgba(20, 15, 0, 0.95), rgba(0, 0, 0, 0.95)); border: 2px solid var(--gold-primary); border-radius: 20px; padding: 50px; width: 850px; max-width: 90%; transform: scale(0.7) translateY(50px); transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275); box-shadow: 0 20px 60px rgba(0,0,0,0.8), 0 0 30px rgba(255, 215, 0, 0.2); position: relative; text-align: center; }
+        .modal-overlay.show .modal-content { transform: scale(1) translateY(0); }
+        .btn-close { position: absolute; top: 20px; right: 25px; background: none; border: none; color: rgba(255,255,255,0.5); font-size: 2.5rem; cursor: pointer; transition: 0.3s; }
+        .btn-close:hover { color: #FF5252; transform: rotate(90deg); }
+
+        /* Hiệu ứng bay tuần tự (Cascade 1 giây) */
+        .cascade-item { opacity: 0; transform: translateY(40px); }
+        .active .cascade-item { animation: cascadeIn 1s cubic-bezier(0.25, 1, 0.5, 1) forwards; }
+        @keyframes cascadeIn { 0% { opacity: 0; transform: translateY(50px) scale(0.95); } 100% { opacity: 1; transform: translateY(0) scale(1); } }
+
+        /* Thanh điều khiển */
+        .controls { position: fixed; bottom: 40px; right: 50px; z-index: 100; display: flex; gap: 20px; }
+        .btn-ctrl { background: rgba(0,0,0,0.7); border: 2px solid var(--gold-primary); color: var(--gold-primary); width: 60px; height: 60px; border-radius: 50%; cursor: pointer; display: flex; align-items: center; justify-content: center; font-size: 1.5rem; transition: all 0.3s ease; backdrop-filter: blur(10px); }
+        .btn-ctrl:hover { background: var(--gold-primary); color: var(--bg-deep); box-shadow: 0 0 30px rgba(255,215,0,0.7); transform: scale(1.15); }
+        .slide-number { position: fixed; bottom: 45px; left: 50px; font-size: 1.5rem; color: var(--gold-secondary); font-family: 'Montserrat', sans-serif; font-weight: bold; z-index: 100;}
+    </style>
+</head>
+<body>
+
+    <div class="bg-system">
+        <div class="cyber-grid"></div>
+        <div class="orb orb-1"></div>
+        <div class="orb orb-2"></div>
+    </div>
+
+    <div class="modal-overlay" id="processModal">
+        <div class="modal-content">
+            <button class="btn-close" onclick="closeModal()"><i class="fas fa-times"></i></button>
+            <i class="fas fa-cogs" id="modalIcon" style="font-size: 4rem; color: var(--gold-secondary); margin-bottom: 20px;"></i>
+            <h2 id="modalTitle" style="color: var(--gold-primary); font-size: 2.8rem; margin-bottom: 20px; font-family: 'Montserrat';">Tiêu đề</h2>
+            <div id="modalDesc" style="font-size: 1.4rem; line-height: 1.8; color: #FFF; text-align: left;">Mô tả chi tiết</div>
+        </div>
+    </div>
+
+    <div class="slides-wrapper">
+
+        <div class="slide active" id="slide-1" style="justify-content: center; align-items: center; text-align: center;">
+            <p class="cascade-item" style="letter-spacing: 6px; color: var(--gold-secondary); font-weight: bold; margin-bottom: 25px; font-size: 1.5rem; text-transform: uppercase;">TRƯỜNG ĐẠI HỌC KỸ THUẬT CÔNG NGHIỆP<br>KHOA QUẢN LÝ CÔNG NGHIỆP</p>
+            <h1 class="gradient-text cascade-item" style="margin-bottom: 20px; font-size: 4.8rem;">KHÓA LUẬN TỐT NGHIỆP</h1>
+            <h2 class="cascade-item" style="color: #FFF; font-weight: 500; font-size: 2rem; margin-bottom: 50px; max-width: 1000px; line-height: 1.5;">Đề tài: HOÀN THIỆN HOẠT ĐỘNG QUẢN TRỊ CHUỖI CUNG ỨNG TẠI CÔNG TY TNHH GLONICS VIỆT NAM</h2>
+            
+            <div class="glass-card grid-2 cascade-item" style="width: 1000px; text-align: left; margin: 0 auto; padding: 40px;">
+                <div>
+                    <p style="margin-bottom: 15px;"><i class="fas fa-user-graduate fa-fw" style="color: var(--gold-primary);"></i> <strong>Sinh viên:</strong> Nguyễn Thị Hoàng Ước</p>
+                    <p><i class="fas fa-fingerprint fa-fw" style="color: var(--gold-primary);"></i> <strong>Lớp:</strong> K58QLC.01</p>
+                </div>
+                <div>
+                    <p style="margin-bottom: 15px;"><i class="fas fa-chalkboard-teacher fa-fw" style="color: var(--gold-secondary);"></i> <strong>GVHD:</strong> Th.S Phạm Thị Minh Khuyên</p>
+                    <p><i class="fas fa-microchip fa-fw" style="color: var(--gold-secondary);"></i> <strong>Ngành:</strong> Quản lý Công nghiệp</p>
+                </div>
+            </div>
+            <p class="cascade-item" style="margin-top: 50px; color: rgba(255,215,0,0.7); font-size: 1.4rem; letter-spacing: 3px; font-weight: 700;">HÀ NỘI - NĂM 2026</p>
+        </div>
+
+        <div class="slide" id="slide-2">
+            <h2 class="slide-header cascade-item">Tính cấp thiết của đề tài</h2>
+            <div class="grid-3 cascade-item">
+                <div class="glass-card">
+                    <h3 style="font-size: 2rem;"><i class="fas fa-globe-asia"></i> Bối cảnh & Xu hướng</h3>
+                    <ul class="tech-list">
+                        <li><i class="fas fa-angle-right"></i> Phụ thuộc lớn NVL nhập khẩu, yêu cầu kỹ thuật nghiêm ngặt.</li>
+                        <li><i class="fas fa-angle-right"></i> Xu hướng toàn cầu: Chuyển đổi số (AI, IoT) & phát triển bền vững (ESG).</li>
+                    </ul>
+                </div>
+                <div class="glass-card" style="border-color: #FF5252;">
+                    <h3 style="color: #FF5252; font-size: 2rem;"><i class="fas fa-exclamation-triangle"></i> Thực trạng Glonics VN</h3>
+                    <ul class="tech-list">
+                        <li><i class="fas fa-times" style="color:#FF5252"></i> Phụ thuộc 99% doanh số vào Samsung → kế hoạch biến động.</li>
+                        <li><i class="fas fa-times" style="color:#FF5252"></i> Tồn kho rất cao (NVL ~3tr USD, Thành phẩm ~5tr USD).</li>
+                        <li><i class="fas fa-times" style="color:#FF5252"></i> Lead time nam châm 12-24 tuần.</li>
+                    </ul>
+                </div>
+                <div class="glass-card" style="border-color: var(--gold-primary);">
+                    <h3 style="font-size: 2rem;"><i class="fas fa-lightbulb"></i> Hệ quả & Cần thiết</h3>
+                    <ul class="tech-list">
+                        <li><i class="fas fa-arrow-down" style="color:var(--gold-secondary)"></i> Hệ quả: Gia tăng chi phí, ứ đọng vốn, rủi ro gián đoạn.</li>
+                        <li><i class="fas fa-check" style="color:#10B981"></i> <strong>Cần thiết:</strong> Áp dụng mô hình SCOR Digital Standard để phân tích và hoàn thiện toàn diện.</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="slide" id="slide-3">
+            <h2 class="slide-header cascade-item">Giới thiệu nội dung đề tài</h2>
+            <div class="grid-2 cascade-item">
+                <div style="display: flex; flex-direction: column; gap: 30px;">
+                    <div class="glass-card">
+                        <h3><i class="fas fa-bullseye"></i> Mục tiêu nghiên cứu</h3>
+                        <ul class="tech-list">
+                            <li><i class="fas fa-check"></i> Đề xuất giải pháp hoàn thiện QTCCU tại Glonics theo mô hình SCOR DS.</li>
+                            <li><i class="fas fa-check"></i> Đánh giá thực trạng theo 7 quy trình lõi, xác định kết quả - hạn chế - nguyên nhân.</li>
+                        </ul>
+                    </div>
+                    <div class="glass-card">
+                        <h3><i class="fas fa-map-marked-alt"></i> Đối tượng & Phạm vi</h3>
+                        <p><i class="fas fa-crosshairs" style="color:var(--gold-secondary)"></i> <strong>Đối tượng:</strong> Hoạt động quản trị chuỗi cung ứng tại Glonics VN.</p>
+                        <p><i class="fas fa-clock" style="color:var(--gold-secondary)"></i> <strong>Thời gian:</strong> Giai đoạn 2023 - 2025.</p>
+                    </div>
+                </div>
+                <div style="display: flex; flex-direction: column; gap: 30px;">
+                    <div class="glass-card">
+                        <h3><i class="fas fa-search"></i> Phương pháp nghiên cứu</h3>
+                        <ul class="tech-list">
+                            <li><i class="fas fa-database"></i> Định tính kết hợp phân tích số liệu thứ cấp.</li>
+                            <li><i class="fas fa-comments"></i> Quan sát trực tiếp, phỏng vấn và tổng hợp.</li>
+                        </ul>
+                    </div>
+                    <div class="glass-card" style="display: flex; flex-direction: column; justify-content: center; align-items: center; border-color: var(--gold-secondary);">
+                        <h3><i class="fas fa-layer-group"></i> Kết cấu 3 Chương</h3>
+                        <div style="text-align: left; margin-top: 10px; font-size: 1.3rem; line-height: 1.8;">
+                            <p><strong>Chương 1:</strong> Khung lý thuyết & Thực tiễn</p>
+                            <p><strong>Chương 2:</strong> Thực trạng tại Glonics VN</p>
+                            <p><strong>Chương 3:</strong> Giải pháp hoàn thiện</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="slide" id="slide-4">
+            <h2 class="slide-header cascade-item">Chương I: Khung lý thuyết của đề tài</h2>
+            <div class="grid-2 cascade-item">
+                <div class="glass-card">
+                    <h3 style="font-size: 2.2rem;"><i class="fas fa-book-open"></i> Lý luận chung về SCM</h3>
+                    <ul class="tech-list">
+                        <li><i class="fas fa-water"></i> <strong>Chuỗi cung ứng:</strong> 3 dòng chảy (vật chất - thông tin - tài chính), mô hình Push/Pull/Hybrid.</li>
+                        <li><i class="fas fa-network-wired"></i> <strong>Quản trị SCM:</strong> Tối ưu chi phí toàn chuỗi, phục vụ KH tốt nhất, vai trò then chốt trong CĐS 4.0.</li>
+                    </ul>
+                    
+                    <h3 style="font-size: 2.2rem; margin-top: 30px;"><i class="fas fa-project-diagram"></i> Mô hình SCOR DS</h3>
+                    <ul class="tech-list">
+                        <li><i class="fas fa-cogs"></i> 7 quy trình chính: Orchestrate (Trung tâm) + Plan, Order, Source, Transform, Fulfill, Return.</li>
+                        <li><i class="fas fa-leaf"></i> Tích hợp số hóa, quản trị rủi ro & ESG.</li>
+                    </ul>
+                    <p style="color: var(--gold-primary); font-style: italic; margin-top: 15px; text-align: center;"><i class="fas fa-hand-pointer animate__animated animate__pulse animate__infinite"></i> (Click mở SCOR DS để xem 7 quy trình)</p>
+                </div>
+                
+                <div class="glass-card" style="display: flex; flex-direction: column; justify-content: center; align-items: center;">
+                    <div class="process-btn" style="width: 80%; padding: 25px; font-size: 1.8rem; margin-bottom: 40px; border-color: var(--gold-primary);" onclick="openScorModal()">
+                        <i class="fas fa-sitemap fa-2x" style="margin-bottom: 15px; display: block;"></i>
+                        MÔ HÌNH SCOR DS
+                    </div>
+                    
+                    <h3 style="font-size: 2rem; width: 100%; text-align: left;"><i class="fas fa-chart-bar"></i> Cơ sở thực tiễn</h3>
+                    <ul class="tech-list" style="width: 100%;">
+                        <li><i class="fas fa-check-circle"></i> Chuỗi cung ứng ngành điện tử phức tạp.</li>
+                        <li><i class="fas fa-check-circle"></i> Bài học từ Samsung, Apple, Dell End-to-End.</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="slide" id="slide-5">
+            <h2 class="slide-header cascade-item">Chương II: Giới thiệu chung về Glonics VN</h2>
+            <div class="grid-2-img cascade-item">
+                <div style="display: flex; flex-direction: column; gap: 30px;">
+                    <div class="glass-card">
+                        <h3><i class="fas fa-building"></i> Tổng quan Doanh nghiệp</h3>
+                        <ul class="tech-list">
+                            <li><i class="fas fa-angle-right"></i> Doanh nghiệp FDI 100% vốn Hàn Quốc (Thành viên Tập đoàn Bujeon).</li>
+                            <li><i class="fas fa-angle-right"></i> Chuyên sản xuất & gia công linh kiện âm thanh cho điện thoại, tivi.</li>
+                            <li><i class="fas fa-angle-right"></i> Quy mô: ~3.000 lao động, nhà máy 70.000 m².</li>
+                        </ul>
+                    </div>
+                    <div class="glass-card">
+                        <h3><i class="fas fa-users"></i> Cơ cấu Bộ phận SCM</h3>
+                        <ul class="tech-list">
+                            <li><i class="fas fa-sitemap"></i> Tổng cộng 47 nhân sự.</li>
+                            <li><i class="fas fa-layer-group"></i> Chia làm 4 nhóm: Purchasing Plan, Procurement, Materials Warehouse, Sales.</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="img-wrapper">
+                    <img src="https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?auto=format&fit=crop&w=800&q=80" alt="Glonics Factory" class="glass-img">
+                </div>
+            </div>
+        </div>
+
+        <div class="slide" id="slide-6">
+            <h2 class="slide-header cascade-item">Các SP, DV chính và đặc trưng sản phẩm</h2>
+            <div class="grid-2-img cascade-item">
+                <div style="display: flex; flex-direction: column; gap: 30px;">
+                    <div class="glass-card">
+                        <h3 style="font-size: 2.2rem;"><i class="fas fa-headphones"></i> Sản phẩm & Dịch vụ chính</h3>
+                        <ul class="tech-list">
+                            <li><i class="fas fa-angle-right"></i> Linh kiện âm thanh & điện tử OEM/ODM cho Samsung và các thiết bị điện tử khác.</li>
+                            <li><i class="fas fa-angle-right"></i> Các loại tai nghe, loa, module âm thanh, thiết bị di động.</li>
+                        </ul>
+                    </div>
+                    <div class="glass-card">
+                        <h3 style="font-size: 2.2rem;"><i class="fas fa-cogs"></i> Đặc trưng sản phẩm</h3>
+                        <ul class="tech-list">
+                            <li><i class="fas fa-exclamation-circle" style="color:var(--gold-secondary)"></i> Chất lượng khắt khe theo tiêu chuẩn Samsung.</li>
+                            <li><i class="fas fa-exclamation-circle" style="color:var(--gold-secondary)"></i> Định mức nguyên vật liệu (BOM) phức tạp.</li>
+                            <li><i class="fas fa-exclamation-triangle" style="color:#FF5252"></i> Nhiều linh kiện có <strong>lead time dài</strong> (đặc biệt nam châm đất hiếm 12-24 tuần).</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="img-wrapper">
+                    <img src="https://images.unsplash.com/photo-1505740420928-5e560c06d30e?auto=format&fit=crop&w=800&q=80" alt="Products" class="glass-img">
+                </div>
+            </div>
+        </div>
+
+        <div class="slide" id="slide-7">
+            <h2 class="slide-header cascade-item">Tình hình kinh doanh giai đoạn 2023 - 2025</h2>
+            <div class="grid-2 cascade-item">
+                <div class="glass-card" style="display: flex; flex-direction: column; justify-content: center;">
+                    <h3 style="font-size: 2.2rem;"><i class="fas fa-chart-line"></i> Kết quả đạt được</h3>
+                    <ul class="tech-list">
+                        <li><i class="fas fa-check" style="color:#10B981"></i> Doanh thu & lợi nhuận duy trì đà tăng trưởng liên tục.</li>
+                        <li><i class="fas fa-check" style="color:#10B981"></i> Năng suất ổn định: <strong>300.000 sản phẩm/ngày</strong>.</li>
+                        <li><i class="fas fa-check" style="color:#10B981"></i> Tỷ lệ giao hàng đúng hạn (OTD) đạt <strong>100%</strong> → duy trì đơn hàng từ Samsung.</li>
+                        <li><i class="fas fa-check" style="color:#10B981"></i> Tỷ lệ lỗi thấp (1-2%), hệ thống SAP ERP vận hành tốt.</li>
+                    </ul>
+                </div>
+                <div class="glass-card" style="border-color: #FF5252; display: flex; flex-direction: column; justify-content: center;">
+                    <h3 style="color: #FF5252; font-size: 2.2rem;"><i class="fas fa-exclamation-triangle"></i> Hạn chế nổi bật</h3>
+                    <ul class="tech-list">
+                        <li><i class="fas fa-times" style="color:#FF5252"></i> Tồn kho NVL và thành phẩm duy trì ở mức quá cao (~3 - 5 triệu USD).</li>
+                        <li><i class="fas fa-arrow-down" style="color:#FF5252"></i> Hệ quả: Gia tăng chi phí lưu kho và ảnh hưởng nghiêm trọng đến hiệu quả sử dụng vốn.</li>
+                    </ul>
+                    <div style="margin-top: 20px; padding: 15px; border-left: 5px solid var(--gold-primary); background: rgba(255,215,0,0.1);">
+                        <strong>Nhận xét:</strong> Kết quả kinh doanh tích cực nhờ năng lực sản xuất ổn định, nhưng cần tối ưu hóa chi phí tồn kho & logistics để tăng lợi nhuận.
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="slide" id="slide-8">
+            <h2 class="slide-header cascade-item">Quy trình Orchestrate (Điều phối) & Plan (Hoạch định)</h2>
+            <div class="grid-2 cascade-item">
+                <div class="glass-card">
+                    <h3 style="font-size: 2.2rem; color: var(--gold-primary);"><i class="fas fa-network-wired"></i> Orchestrate (Điều phối)</h3>
+                    <p><strong>Lý thuyết:</strong> Quy trình trung tâm điều phối chiến lược, đồng bộ chuỗi cung ứng (SCOR DS).</p>
+                    <p><strong>Thực trạng:</strong> Tổ chức họp S&OP định kỳ, quản trị rủi ro cơ bản. Hệ thống SAP chưa có dashboard KPI real-time, điều phối mang tính phản ứng.</p>
+                    <div style="background: rgba(0,0,0,0.5); padding: 15px; border-radius: 10px; margin-top: 15px;">
+                        <p style="font-size: 1.15rem;"><i class="fas fa-check" style="color:#10B981"></i> <strong>Kết quả:</strong> Phối hợp cơ bản, hỗ trợ OTD 100%.</p>
+                        <p style="font-size: 1.15rem;"><i class="fas fa-times" style="color:#FF5252"></i> <strong>Hạn chế:</strong> Điều phối chủ động thấp, thiếu công cụ số.</p>
+                        <p style="font-size: 1.15rem;"><i class="fas fa-info-circle" style="color:var(--gold-secondary)"></i> <strong>Nguyên nhân:</strong> Đầu tư công nghệ hạn chế.</p>
+                    </div>
+                </div>
+
+                <div class="glass-card">
+                    <h3 style="font-size: 2.2rem; color: var(--gold-secondary);"><i class="fas fa-calendar-alt"></i> Plan (Hoạch định)</h3>
+                    <p><strong>Lý thuyết:</strong> Dự báo nhu cầu, lập kế hoạch MPS, xây dựng BOM và quản lý tồn kho.</p>
+                    <p><strong>Thực trạng:</strong> Chủ yếu thu thập FCST từ Samsung. Độ chính xác 70-75%, tỷ lệ điều chỉnh đột ngột 25-35%/tháng. Tồn kho cao.</p>
+                    <div style="background: rgba(0,0,0,0.5); padding: 15px; border-radius: 10px; margin-top: 15px;">
+                        <p style="font-size: 1.15rem;"><i class="fas fa-check" style="color:#10B981"></i> <strong>Kết quả:</strong> Năng suất ổn định 300k SP/ngày.</p>
+                        <p style="font-size: 1.15rem;"><i class="fas fa-times" style="color:#FF5252"></i> <strong>Hạn chế:</strong> Bị động, tồn kho cao, thiếu AI/ML dự báo.</p>
+                        <p style="font-size: 1.15rem;"><i class="fas fa-info-circle" style="color:var(--gold-secondary)"></i> <strong>Nguyên nhân:</strong> Phụ thuộc FCST 1 chiều.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="slide" id="slide-9">
+            <h2 class="slide-header cascade-item">Quy trình Order (Đặt hàng) & Source (Nguồn cung)</h2>
+            <div class="grid-2 cascade-item">
+                <div class="glass-card">
+                    <h3 style="font-size: 2.2rem; color: var(--gold-primary);"><i class="fas fa-shopping-cart"></i> Order (Đặt hàng)</h3>
+                    <p><strong>Lý thuyết:</strong> Xử lý đơn hàng, xác nhận ATP và lập kế hoạch.</p>
+                    <p><strong>Thực trạng:</strong> Tiếp nhận FCST từ Samsung. Sales phối hợp xử lý trên SAP ERP.</p>
+                    <div style="background: rgba(0,0,0,0.5); padding: 15px; border-radius: 10px; margin-top: 15px;">
+                        <p style="font-size: 1.15rem;"><i class="fas fa-check" style="color:#10B981"></i> <strong>Kết quả:</strong> OTD 100%, xử lý nhanh (1.2-1.8 ngày).</p>
+                        <p style="font-size: 1.15rem;"><i class="fas fa-times" style="color:#FF5252"></i> <strong>Hạn chế:</strong> Tần suất thay đổi 25-35%/tháng, thiếu cảnh báo sớm.</p>
+                        <p style="font-size: 1.15rem;"><i class="fas fa-info-circle" style="color:var(--gold-secondary)"></i> <strong>Nguyên nhân:</strong> Khả năng chủ động hạn chế.</p>
+                    </div>
+                </div>
+
+                <div class="glass-card">
+                    <h3 style="font-size: 2.2rem; color: var(--gold-secondary);"><i class="fas fa-link"></i> Source (Nguồn cung)</h3>
+                    <p><strong>Lý thuyết:</strong> Đánh giá NCC, đặt hàng, IQC.</p>
+                    <p><strong>Thực trạng:</strong> ~40 NCC (15 chính). TQ 30-35%. Lead time nam châm ~45 ngày giấy phép, chip 12-24 tuần.</p>
+                    <div style="background: rgba(0,0,0,0.5); padding: 15px; border-radius: 10px; margin-top: 15px;">
+                        <p style="font-size: 1.15rem;"><i class="fas fa-check" style="color:#10B981"></i> <strong>Kết quả:</strong> Nguồn ổn định, IQY ~96.5%, Supplier OTD ~92.8%.</p>
+                        <p style="font-size: 1.15rem;"><i class="fas fa-times" style="color:#FF5252"></i> <strong>Hạn chế:</strong> NCC tập trung, lead time dài, rủi ro chính sách cao.</p>
+                        <p style="font-size: 1.15rem;"><i class="fas fa-info-circle" style="color:var(--gold-secondary)"></i> <strong>Nguyên nhân:</strong> Chưa đa dạng hóa chủ động.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="slide" id="slide-10">
+            <h2 class="slide-header cascade-item">Quy trình Transform (Biến đổi / Sản xuất)</h2>
+            <div class="grid-2-img cascade-item">
+                <div style="display: flex; flex-direction: column; gap: 30px;">
+                    <div class="glass-card">
+                        <h3 style="font-size: 2.2rem;"><i class="fas fa-cogs"></i> Lý thuyết & Thực trạng</h3>
+                        <p><strong>Lý thuyết:</strong> Chuyển hóa NVL thành thành phẩm qua sản xuất, lắp ráp, KCS.</p>
+                        <p><strong>Thực trạng:</strong> Xưởng B2, C2... Phối hợp Production - PE - Quality. Áp dụng 5S + PQC-OQC.</p>
+                        <div style="display: flex; justify-content: space-between; margin-top: 15px; border-top: 1px solid rgba(255,215,0,0.2); padding-top: 10px;">
+                            <span><strong style="color:var(--gold-primary); font-size: 1.8rem;">300K</strong> sp/ngày</span>
+                            <span><strong style="color:#10B981; font-size: 1.8rem;">1-2%</strong> lỗi</span>
+                            <span><strong style="color:#FF8F00; font-size: 1.8rem;">48%</strong> TĐ Hóa</span>
+                        </div>
+                    </div>
+                    <div class="glass-card">
+                        <h3 style="font-size: 2.2rem;"><i class="fas fa-chart-bar"></i> Đánh giá</h3>
+                        <ul class="tech-list" style="margin-top: 10px;">
+                            <li><i class="fas fa-check" style="color:#10B981"></i> <strong>Kết quả:</strong> Năng suất ổn định, tỷ lệ lỗi giảm mạnh.</li>
+                            <li><i class="fas fa-times" style="color:#FF5252"></i> <strong>Hạn chế:</strong> Tăng ca/điều chỉnh thường xuyên do KH. Công đoạn thủ công nhiều.</li>
+                            <li><i class="fas fa-info-circle" style="color:var(--gold-secondary)"></i> <strong>Nguyên nhân:</strong> Phụ thuộc 1 khách hàng, tự động hóa chưa cao.</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="img-wrapper">
+                    <img src="https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?auto=format&fit=crop&w=800&q=80" alt="Production Line" class="glass-img">
+                </div>
+            </div>
+        </div>
+
+        <div class="slide" id="slide-11">
+            <h2 class="slide-header cascade-item">Quy trình Fulfill (Hoàn thành) & Return (Hoàn trả)</h2>
+            <div class="grid-2 cascade-item">
+                <div class="glass-card">
+                    <h3 style="font-size: 2.2rem; color: var(--gold-primary);"><i class="fas fa-shipping-fast"></i> Fulfill (Giao hàng)</h3>
+                    <p><strong>Lý thuyết:</strong> Hoàn thành đơn hàng, giao đúng hạn - chất lượng.</p>
+                    <p><strong>Thực trạng:</strong> Giao qua 3PL (Dasuka, Kido). Kho 400m², quản lý trên SAP ERP.</p>
+                    <div style="background: rgba(0,0,0,0.5); padding: 15px; border-radius: 10px; margin-top: 15px;">
+                        <p style="font-size: 1.15rem;"><i class="fas fa-check" style="color:#10B981"></i> <strong>Kết quả:</strong> OTD 100%, phục vụ xuất sắc.</p>
+                        <p style="font-size: 1.15rem;"><i class="fas fa-times" style="color:#FF5252"></i> <strong>Hạn chế:</strong> Chi phí vận chuyển tăng mạnh khi biến động. Kho nhỏ, phụ thuộc 3PL.</p>
+                        <p style="font-size: 1.15rem;"><i class="fas fa-info-circle" style="color:var(--gold-secondary)"></i> <strong>Nguyên nhân:</strong> Không có xe riêng.</p>
+                    </div>
+                </div>
+
+                <div class="glass-card">
+                    <h3 style="font-size: 2.2rem; color: var(--gold-secondary);"><i class="fas fa-recycle"></i> Return (Hoàn trả)</h3>
+                    <p><strong>Lý thuyết:</strong> Xử lý hàng hoàn trả, kinh tế tuần hoàn (SCOR DS).</p>
+                    <p><strong>Thực trạng:</strong> Tỷ lệ hoàn trả 1.2%. Tái sử dụng linh kiện 68%, tái chế 85%, xử lý 8 ngày. Chủ yếu làm thủ công.</p>
+                    <div style="background: rgba(0,0,0,0.5); padding: 15px; border-radius: 10px; margin-top: 15px;">
+                        <p style="font-size: 1.15rem;"><i class="fas fa-check" style="color:#10B981"></i> <strong>Kết quả:</strong> Tái chế tăng dần, chi phí xử lý giảm 18%.</p>
+                        <p style="font-size: 1.15rem;"><i class="fas fa-times" style="color:#FF5252"></i> <strong>Hạn chế:</strong> Thủ công, chưa tích hợp SAP ERP sâu.</p>
+                        <p style="font-size: 1.15rem;"><i class="fas fa-info-circle" style="color:var(--gold-secondary)"></i> <strong>Nguyên nhân:</strong> Chưa số hóa Reverse Logistics.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="slide" id="slide-12">
+            <h2 class="slide-header cascade-item">Đánh giá chung thực trạng hoạt động</h2>
+            <div class="grid-3 cascade-item">
+                <div class="glass-card" style="border-top: 6px solid #10B981;">
+                    <h3 style="color:#10B981;"><i class="fas fa-star"></i> KẾT QUẢ ĐẠT ĐƯỢC</h3>
+                    <ul class="tech-list" style="font-size: 1.1rem; background: transparent; padding:0;">
+                        <li><i class="fas fa-check"></i> OTD 100%, năng suất ổn định, KCS tốt (lỗi 1-2%).</li>
+                        <li><i class="fas fa-check"></i> Ứng dụng SAP ERP cơ bản.</li>
+                        <li><i class="fas fa-check"></i> Đội ngũ SCM 47 người có cấu trúc. Bước đầu hướng tới bền vững.</li>
+                    </ul>
+                </div>
+                <div class="glass-card" style="border-top: 6px solid #FF5252;">
+                    <h3 style="color:#FF5252;"><i class="fas fa-exclamation-triangle"></i> HẠN CHẾ TỒN TẠI</h3>
+                    <ul class="tech-list" style="font-size: 1.1rem; background: transparent; padding:0;">
+                        <li><i class="fas fa-times"></i> Phụ thuộc quá mức vào 1 khách hàng (99% Samsung).</li>
+                        <li><i class="fas fa-times"></i> Tồn kho cao gây ứ đọng vốn. Lead time dài.</li>
+                        <li><i class="fas fa-times"></i> Tính linh hoạt thấp. Số hóa cơ bản. Bền vững mang tính đối phó.</li>
+                    </ul>
+                </div>
+                <div class="glass-card" style="border-top: 6px solid var(--gold-secondary);">
+                    <h3 style="color:var(--gold-secondary);"><i class="fas fa-search"></i> NGUYÊN NHÂN</h3>
+                    <ul class="tech-list" style="font-size: 1.1rem; background: transparent; padding:0;">
+                        <li><i class="fas fa-user" style="color:var(--gold-secondary)"></i> <strong>Chủ quan:</strong> Chiến lược chưa linh hoạt, đầu tư công nghệ hạn chế, QL tồn kho chưa tối ưu.</li>
+                        <li><i class="fas fa-globe" style="color:var(--gold-secondary)"></i> <strong>Khách quan:</strong> Đặc thù ngành, biến động từ KH lớn, rủi ro địa chính trị & logistics toàn cầu.</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="slide" id="slide-13">
+            <h2 class="slide-header cascade-item">Yếu tố môi trường vĩ mô & ngành ảnh hưởng</h2>
+            <div class="grid-2 cascade-item">
+                <div class="glass-card" style="border-left: 8px solid #10B981; display: flex; flex-direction: column; justify-content: center;">
+                    <h3 style="font-size: 2.8rem; color:#10B981; margin-bottom: 30px;"><i class="fas fa-chart-line"></i> CƠ HỘI (Opportunities)</h3>
+                    <ul class="tech-list">
+                        <li><i class="fas fa-arrow-up" style="color:#10B981"></i> Samsung mở rộng sản xuất tại Việt Nam → tiềm năng tăng đơn hàng.</li>
+                        <li><i class="fas fa-laptop-code" style="color:#10B981"></i> Xu hướng chuyển đổi số & ESG toàn cầu.</li>
+                        <li><i class="fas fa-handshake" style="color:#10B981"></i> Nhận sự hỗ trợ từ Tập đoàn Bujeon về công nghệ & tiêu chuẩn.</li>
+                    </ul>
+                </div>
+                <div class="glass-card" style="border-left: 8px solid #FF5252; display: flex; flex-direction: column; justify-content: center;">
+                    <h3 style="font-size: 2.8rem; color:#FF5252; margin-bottom: 30px;"><i class="fas fa-radiation-alt"></i> NGUY CƠ (Threats)</h3>
+                    <ul class="tech-list">
+                        <li><i class="fas fa-exclamation" style="color:#FF5252"></i> Biến động mạnh & thường xuyên FCST từ Samsung.</li>
+                        <li><i class="fas fa-globe-asia" style="color:#FF5252"></i> Rủi ro nguồn cung chiến lược (Trung Quốc siết xuất khẩu đất hiếm).</li>
+                        <li><i class="fas fa-ship" style="color:#FF5252"></i> Biến động logistics, hải quan, chi phí khẩn cấp; Vĩ mô (lạm phát).</li>
+                        <li><i class="fas fa-leaf" style="color:#FF5252"></i> Áp lực ESG ngày càng cao từ khách hàng.</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="slide" id="slide-14">
+            <h2 class="slide-header cascade-item">Chương III: Định hướng chiến lược & Mục tiêu</h2>
+            <div class="grid-2 cascade-item">
+                <div class="glass-card">
+                    <h3 style="font-size: 2.2rem;"><i class="fas fa-compass"></i> Định hướng chung</h3>
+                    <ul class="tech-list">
+                        <li><i class="fas fa-check-square"></i> Xây dựng chuỗi cung ứng: <strong>Linh hoạt - Chủ động - Minh bạch - Bền vững</strong>.</li>
+                        <li><i class="fas fa-check-square"></i> Chuyển từ "phản ứng" sang "dự báo & thích ứng".</li>
+                        <li><i class="fas fa-check-square"></i> Giảm phụ thuộc KH, tối ưu tồn kho, rút ngắn lead time, số hóa & truy xuất.</li>
+                    </ul>
+                </div>
+                <div class="glass-card" style="display: flex; flex-direction: column; gap: 20px;">
+                    <div>
+                        <h3 style="color: var(--gold-secondary);"><i class="fas fa-flag"></i> Mục tiêu ngắn hạn (2026-2027)</h3>
+                        <ul style="list-style: square inside; font-size: 1.2rem; padding-left: 20px; line-height: 1.5;">
+                            <li>Giảm phụ thuộc Samsung <strong>&lt; 90%</strong>.</li>
+                            <li>Giảm tồn kho trung bình <strong>15-20%</strong>.</li>
+                            <li>Triển khai dashboard KPI real-time. Tăng TĐH 20-25%.</li>
+                            <li>Tái sử dụng linh kiện Return <strong>&gt; 70%</strong>.</li>
+                        </ul>
+                    </div>
+                    <div style="border-top: 1px solid rgba(255,255,255,0.2); padding-top: 15px;">
+                        <h3 style="color: #10B981;"><i class="fas fa-flag-checkered"></i> Mục tiêu dài hạn (2026-2030)</h3>
+                        <ul style="list-style: square inside; font-size: 1.2rem; padding-left: 20px; line-height: 1.5;">
+                            <li>Đáp ứng biến động ±30% không gián đoạn.</li>
+                            <li>Nội địa hóa NVL <strong>40-50%</strong>. Áp dụng AI dự báo.</li>
+                            <li>Đạt chứng nhận bền vững quốc tế.</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="slide" id="slide-15">
+            <h2 class="slide-header cascade-item">Các giải pháp cụ thể hoàn thiện QT Cung ứng</h2>
+            <div class="glass-card cascade-item" style="height: 75%; display: flex; flex-direction: column; justify-content: center;">
+                <ul class="tech-list" style="font-size: 1.15rem;">
+                    <li>
+                        <i class="fas fa-brain fa-2x" style="color:var(--gold-primary);"></i>
+                        <div>
+                            <strong style="color:var(--gold-primary); font-size: 1.4rem;">1. Hoàn thiện hoạch định & lập kế hoạch SX</strong><br>
+                            Rolling Forecast đa nguồn + AI/ML + S&OP hàng tuần + Early Warning System → Độ chính xác dự báo ≥85%, giảm điều chỉnh đột ngột &lt;15%.
+                        </div>
+                    </li>
+                    <li>
+                        <i class="fas fa-link fa-2x" style="color:var(--gold-secondary);"></i>
+                        <div>
+                            <strong style="color:var(--gold-secondary); font-size: 1.4rem;">2. Phát triển & đa dạng hóa nhà cung cấp</strong><br>
+                            Phân loại 3 nhóm + hợp đồng khung dài hạn + nội địa hóa 40-50% + giảm tỷ lệ NCC TQ → Giảm rủi ro gián đoạn & lead time.
+                        </div>
+                    </li>
+                    <li>
+                        <i class="fas fa-desktop fa-2x" style="color:#00F2FF;"></i>
+                        <div>
+                            <strong style="color:#00F2FF; font-size: 1.4rem;">3. Ứng dụng công nghệ số & nâng cao điều phối</strong><br>
+                            SAP IBP/APO + Power BI dashboard real-time + AI dự báo + Traceability QR/IoT → Số hóa ~80%, ra quyết định nhanh hơn 30-40%.
+                        </div>
+                    </li>
+                    <li>
+                        <i class="fas fa-boxes fa-2x" style="color:#F59E0B;"></i>
+                        <div>
+                            <strong style="color:#F59E0B; font-size: 1.4rem;">4. Tối ưu hóa quản lý tồn kho & giao hàng</strong><br>
+                            Phân loại ABC + WMS + đàm phán lại 3PL + dashboard real-time → Giảm tồn kho 20%, chi phí lưu kho & vận chuyển 15%.
+                        </div>
+                    </li>
+                    <li>
+                        <i class="fas fa-leaf fa-2x" style="color:#10B981;"></i>
+                        <div>
+                            <strong style="color:#10B981; font-size: 1.4rem;">5. Phát triển CCU bền vững & kinh tế tuần hoàn</strong><br>
+                            Quy trình Return khép kín + đánh giá NCC theo ESG + bao bì xanh + phân tích lỗi Pareto → Tái sử dụng >75%, giảm chi phí Return 20%.
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="slide" id="slide-16">
+            <div class="cascade-item" style="text-align: center; height: 100%; display: flex; flex-direction: column; justify-content: center; align-items: center;">
+                <div class="animate__animated animate__pulse animate__infinite" style="animation-duration: 2s;">
+                    <i class="fas fa-crown fa-6x gradient-text" style="margin-bottom: 40px;"></i>
+                </div>
+                <h1 style="font-size: 6rem; color:#FFF; margin-bottom: 30px;">CẢM ƠN QUÝ THẦY CÔ!</h1>
+                <div class="glass-card" style="margin-top: 50px; padding: 30px 60px; border-color: var(--gold-primary); border-width: 3px;">
+                    <p style="font-weight: 700; font-size: 2rem; color: var(--gold-primary);">Em xin sẵn sàng trả lời các câu hỏi của Hội đồng!</p>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <div class="controls">
+        <button class="btn-ctrl" id="prevBtn"><i class="fas fa-chevron-left"></i></button>
+        <button class="btn-ctrl" id="nextBtn"><i class="fas fa-chevron-right"></i></button>
+    </div>
+    <div class="slide-number"><span id="currentNum">1</span><span style="color: rgba(255,215,0,0.5)"> / 16</span></div>
+
+    <script>
+        const slides = document.querySelectorAll('.slide');
+        const currentNumDisp = document.getElementById('currentNum');
+        const modal = document.getElementById('processModal');
+        let currentSlide = 0;
+        let isAnimating = false;
+        let isModalOpen = false;
+
+        function updateSlideSystem() {
+            isAnimating = true;
+            slides.forEach((slide, index) => {
+                slide.classList.remove('active');
+                
+                const cascadeItems = slide.querySelectorAll('.cascade-item');
+                cascadeItems.forEach(item => { item.style.animationDelay = '0s'; });
+
+                if (index === currentSlide) {
+                    slide.classList.add('active');
+                    currentNumDisp.innerText = currentSlide + 1;
+                    
+                    let delay = 0.2;
+                    const items = slide.querySelectorAll('.cascade-item');
+                    items.forEach(item => {
+                        item.style.animationDelay = delay + 's';
+                        delay += 0.3; 
+                    });
+                }
+            });
+
+            closeModal();
+            setTimeout(() => { isAnimating = false; }, 1000);
+        }
+
+        updateSlideSystem();
+
+        document.getElementById('nextBtn').addEventListener('click', () => {
+            if (!isAnimating && !isModalOpen && currentSlide < slides.length - 1) {
+                currentSlide++;
+                updateSlideSystem();
+            }
+        });
+
+        document.getElementById('prevBtn').addEventListener('click', () => {
+            if (!isAnimating && !isModalOpen && currentSlide > 0) {
+                currentSlide--;
+                updateSlideSystem();
+            }
+        });
+
+        document.addEventListener('keydown', (e) => {
+            if(isModalOpen && e.key === 'Escape') {
+                closeModal();
+                return;
+            }
+            if(isModalOpen) return;
+
+            if (e.key === 'ArrowRight' || e.key === ' ') document.getElementById('nextBtn').click();
+            if (e.key === 'ArrowLeft') document.getElementById('prevBtn').click();
+        });
+
+        /* --- POPUP CHO MÔ HÌNH SCOR DS (Slide 4) --- */
+        function openScorModal() {
+            document.getElementById('modalTitle').innerText = "7 Quy trình cốt lõi - SCOR DS";
+            document.getElementById('modalDesc').innerHTML = `
+                <div style="text-align: left; font-size: 1.3rem; line-height: 1.8;">
+                    <p><strong style="color:var(--gold-primary)">1. Orchestrate:</strong> Trung tâm điều phối chiến lược, đồng bộ chuỗi cung ứng.</p>
+                    <p><strong>2. Plan:</strong> Dự báo nhu cầu, lập kế hoạch sản xuất, quản lý tồn kho.</p>
+                    <p><strong>3. Order:</strong> Xử lý đơn hàng, xác nhận ATP.</p>
+                    <p><strong>4. Source:</strong> Đánh giá NCC, đặt hàng, kiểm tra chất lượng đầu vào.</p>
+                    <p><strong>5. Transform:</strong> Chuyển hóa NVL thành thành phẩm qua sản xuất/lắp ráp.</p>
+                    <p><strong>6. Fulfill:</strong> Đóng gói, vận chuyển, giao hàng đúng hạn.</p>
+                    <p><strong>7. Return:</strong> Xử lý hàng hoàn trả, sửa chữa, kinh tế tuần hoàn.</p>
+                </div>
+            `;
+            modal.classList.add('show');
+            isModalOpen = true;
+        }
+
+        function closeModal() {
+            modal.classList.remove('show');
+            isModalOpen = false;
+        }
+
+        modal.addEventListener('click', function(e) {
+            if (e.target === modal) { closeModal(); }
+        });
+    </script>
+</body>
+</html>
